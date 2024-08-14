@@ -1,24 +1,29 @@
 #include <stdio.h>
 #include <stdlib.h>
+
 void main()
 {
-    int n, seekTime = 0, diff;
-    printf("Enter the size of Queue: ");
+    int n, i, max_size;
+    printf("Enter disk size: ");
+    scanf("%d", &max_size);
+    printf("Enter number of requests: ");
     scanf("%d", &n);
-    int queue[n + 1];
-    printf("Enter the Queue: ");
-    for (int i = 1; i <= n; i++)
-        scanf("%d", &queue[i]);
-    printf("Enter the initial head position: ");
-    scanf("%d", &queue[0]); /* head element */
-    printf("\nMovement of Cylinders\n");
-    for (int i = 0; i < n; i++)
+    int requests[n + 1], head, total_seek_time = 0;
+    printf("Enter %d requests: ", n);
+    for (i = 1; i < n + 1; i++)
     {
-        diff = abs(queue[i + 1] - queue[i]);
-        seekTime += diff;
-        printf("%d -> ", queue[i]);
+        scanf("%d", &requests[i]);
+        if (requests[i] < 0 || requests[i] >= max_size)
+            printf("Request %d can't be served.\n", requests[i--]);
     }
-    printf("%d", queue[n]);
-    printf("\nTotal Seek Time: %d", seekTime);
-    printf("\nAverage Seek Time = %f", (float)seekTime / n);
+    printf("Initial head position: ");
+    scanf("%d", &requests[0]);
+    printf("Order of requests: %d->", requests[0]);
+    for (i = 0; i < n; i++)
+    {
+        total_seek_time += abs(requests[i] - requests[i + 1]);
+        printf("%d->", requests[i]);
+    }
+    printf("%d\n", requests[i]);
+    printf("Total seek time: %d\n", total_seek_time);
 }
