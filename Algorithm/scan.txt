@@ -1,0 +1,26 @@
+Start
+Input Disk Parameters:
+    Read the maximum disk range (max).
+    Read the initial head position (head).
+    Read the number of disk requests (n).
+Input Disk Queue:
+    Initialize two empty queues: queue1 (for requests greater than or equal to head) and queue2 (for requests less than head).
+    For each disk request:
+    If the request is greater than or equal to head, add it to queue1.
+    If the request is less than head, add it to queue2.
+Sort the Queues:
+    Sort queue1 in ascending order (from smallest to largest).
+    Sort queue2 in descending order (from largest to smallest).
+Build the Final Queue:
+    Create a final queue that starts with the head position.
+    Append all elements of queue1 to queue.
+    Append the max (end of disk) to queue.
+    Append all elements of queue2 to queue.
+Calculate Seek Time:
+    Initialize seek as 0.
+    For each pair of consecutive positions in queue, calculate the difference (seek time) and accumulate it into seek.
+Output the Results:
+    Print the sequence of head movements (disk access order).
+    Print the total seek time.
+    Calculate and print the average seek time.
+Stop

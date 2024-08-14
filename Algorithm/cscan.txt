@@ -1,0 +1,21 @@
+Start
+Input Parameters:
+    Read max (maximum disk range), head (initial head position), and n (number of disk requests).
+Divide Requests:
+    Split disk requests into two groups:
+    ueue1 for requests ≥ head.
+    queue2 for requests < head.
+Sort Requests:
+    Sort queue1 in ascending order.
+    Sort queue2 in ascending order.
+Build the Access Sequence:
+    Start the queue with the initial head.
+    Append queue1 to queue.
+    Append max (end of disk) to queue.
+    Append 0 (start of disk) to queue.
+    Append queue2 to queue.
+Calculate Seek Time:
+    Compute the total seek time by summing the absolute differences between consecutive positions in queue.
+Output Results:
+    Print the head movement sequence, total seek time, and average seek time.
+Stop
