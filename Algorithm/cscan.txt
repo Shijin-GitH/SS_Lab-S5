@@ -18,4 +18,4 @@ Calculate Seek Time:
     Compute the total seek time by summing the absolute differences between consecutive positions in queue.
 Output Results:
     Print the head movement sequence, total seek time, and average seek time.
-Stop
+Stop    

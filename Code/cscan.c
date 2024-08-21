@@ -1,68 +1,70 @@
 #include <stdio.h>
-void main()
-{
-    int n, head, max, diff, temp, temp1 = 0, temp2 = 0, seek = 0;
-    int i, j, k;
-    printf("Enter the max range of disk : ");
-    scanf("%d", &max);
-    printf("Enter the initial head position : ");
-    scanf("%d", &head);
-    printf("Enter the size of queue request : ");
+#include <stdlib.h>
+
+void main() {
+    int n, i, max_size, head, total_seek_time = 0, direction;
+    printf("Enter disk size: ");
+    scanf("%d", &max_size);
+    printf("Enter number of requests: ");
     scanf("%d", &n);
-    int queue[n + 3], queue1[n + 3], queue2[n + 3];
-    printf("Enter the queue of disk positions to be read\n");
-    for (i = 1; i <= n; i++)
-    {
-        scanf("%d", &temp);
-        if (temp >= head)
-        {
-            queue1[temp1] = temp;
-            temp1++;
-        }
-        else
-        {
-            queue2[temp2] = temp;
-            temp2++;
+    int requests[n], sorted_requests[n + 2];
+    printf("Enter %d requests: ", n);
+    for (i = 0; i < n; i++) {
+        scanf("%d", &requests[i]);
+        if (requests[i] < 0 || requests[i] >= max_size) {
+            printf("Request %d can't be served.\n", requests[i--]);
         }
     }
-    for (i = 0; i < temp1 - 1; i++)
-    {
-        for (j = 0; j < temp1 - i - 1; j++)
-        {
-            if (queue1[j] > queue1[j + 1])
-            {
-                temp = queue1[j];
-                queue1[j] = queue1[j + 1];
-                queue1[j + 1] = temp;
+    printf("Initial head position: ");
+    scanf("%d", &head);
+    printf("Enter head movement direction (0 for down, 1 for up): ");
+    scanf("%d", &direction);
+
+    // Sort the requests
+    for (i = 0; i < n; i++) {
+        for (int j = i + 1; j < n; j++) {
+            if (requests[i] > requests[j]) {
+                int temp = requests[i];
+                requests[i] = requests[j];
+                requests[j] = temp;
             }
         }
     }
-    for (i = 0; i < temp2 - 1; i++)
-    {
-        for (j = 0; j < temp2 - i - 1; j++)
-        {
-            if (queue2[j] > queue2[j + 1])
-            {
-                temp = queue2[j];
-                queue2[j] = queue2[j + 1];
-                queue2[j + 1] = temp;
+
+    int index = 0;
+    if (direction == 1) { // Upward direction
+        for (i = 0; i < n; i++) {
+            if (requests[i] >= head) {
+                sorted_requests[index++] = requests[i];
+            }
+        }
+        sorted_requests[index++] = max_size - 1; // End of the disk
+        sorted_requests[index++] = 0; // Start of the disk
+        for (i = 0; i < n; i++) {
+            if (requests[i] < head) {
+                sorted_requests[index++] = requests[i];
+            }
+        }
+    } else { // Downward direction
+        for (i = n - 1; i >= 0; i--) {
+            if (requests[i] <= head) {
+                sorted_requests[index++] = requests[i];
+            }
+        }
+        sorted_requests[index++] = 0; // Start of the disk
+        sorted_requests[index++] = max_size - 1; // End of the disk
+        for (i = n - 1; i >= 0; i--) {
+            if (requests[i] > head) {
+                sorted_requests[index++] = requests[i];
             }
         }
     }
-    queue[0] = head;
-    for (i = 1, j = 0; j < temp1; i++, j++)
-        queue[i] = queue1[j];
-    queue[i] = max;
-    queue[i + 1] = 0;
-    for (i = temp1 + 3, j = 0; j < temp2; i++, j++)
-        queue[i] = queue2[j];
-    for (i = 0; i < n + 2; i++)
-    {
-        diff = abs(queue[i + 1] - queue[i]);
-        seek += diff;
-        printf(" %d -> ", queue[i]);
+
+    printf("Order of requests: %d->", head);
+    for (i = 0; i < index; i++) {
+        total_seek_time += abs(head - sorted_requests[i]);
+        head = sorted_requests[i];
+        printf("%d->", head);
     }
-    printf("%d", queue[n + 2]);
-    printf("\n Total seek time is %d\n", seek);
-    printf("Average seek time is %f\n", seek / (float)n);
+    printf("\nTotal seek time: %d\n", total_seek_time);
 }
